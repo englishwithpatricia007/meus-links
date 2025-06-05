@@ -1,9 +1,21 @@
 import { FiLink } from "react-icons/fi";
 import "./home.css"
-
 import Menu from '../../components/Menu'
+import { useState } from "react";
+import LinkItem from "../../components/LinkItem";
+import { Link } from "react-router-dom";
 
 export default function Home() {
+
+  const [link, setLink] = useState('');
+
+  const [showModal, setShowModal] = useState(false);
+
+
+  function handleShortLink() {
+    setShowModal(true)
+  }
+
   return (
     <div className="container-home">
 
@@ -16,14 +28,24 @@ export default function Home() {
       <div className="area-input">
         <div>
           <FiLink size={24} color="#FFF" />
-          <input placeholder="Cole seu link aqui... " />
+          <input
+            value={link}
+            onChange={e => setLink(e.target.value)}
+            placeholder="Cole seu link aqui... " />
         </div>
 
-        <button>Encurtar link</button>
+        <button
+          onClick={handleShortLink}>Encurtar link</button>
       </div>
 
       <Menu />
 
+
+      {showModal && (
+        <LinkItem
+          closeModal={() => setShowModal(false)}
+        />
+      )}
     </div>
   )
 }
