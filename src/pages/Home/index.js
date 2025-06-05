@@ -4,6 +4,8 @@ import Menu from '../../components/Menu'
 import { useState } from "react";
 import LinkItem from "../../components/LinkItem";
 import { Link } from "react-router-dom";
+import api from '../../services/api.js'
+
 
 export default function Home() {
 
@@ -11,9 +13,23 @@ export default function Home() {
 
   const [showModal, setShowModal] = useState(false);
 
+  const [data, setData] = useState({})
 
-  function handleShortLink() {
-    setShowModal(true)
+
+
+  async function handleShortLink() {
+    try {
+      const response = await api.post('/shorten', { long_url: link })
+      //console.log(response.data)
+      setData(response.data)
+      setShowModal(true)
+      setLink('')
+    } catch {
+      alert("Parece que algo deu errado!")
+      setLink('')
+    }
+
+    //setShowModal(true)
   }
 
   return (
@@ -44,6 +60,7 @@ export default function Home() {
       {showModal && (
         <LinkItem
           closeModal={() => setShowModal(false)}
+          content={data}
         />
       )}
     </div>
