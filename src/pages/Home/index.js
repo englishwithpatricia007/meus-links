@@ -3,8 +3,8 @@ import "./home.css"
 import Menu from '../../components/Menu'
 import { useState } from "react";
 import LinkItem from "../../components/LinkItem";
-import { Link } from "react-router-dom";
 import api from '../../services/api.js'
+import { saveLink } from '../../services/storeLinks.js'
 
 
 export default function Home() {
@@ -20,16 +20,14 @@ export default function Home() {
   async function handleShortLink() {
     try {
       const response = await api.post('/shorten', { long_url: link })
-      //console.log(response.data)
       setData(response.data)
       setShowModal(true)
       setLink('')
+      saveLink('@encurtaLink', response.data)
     } catch {
       alert("Parece que algo deu errado!")
       setLink('')
     }
-
-    //setShowModal(true)
   }
 
   return (
@@ -37,7 +35,7 @@ export default function Home() {
 
       <div className="logo">
         <img src="logo.png" alt="Logo do projeto" />
-        <h1>SujeitoLink</h1>
+        <h1>Code & Ride</h1>
         <span> Cole seu link para encurtar 👇</span>
       </div>
 
